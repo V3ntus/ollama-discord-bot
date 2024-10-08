@@ -10,7 +10,7 @@ pub fn create_ollama() -> Ollama {
             std::env::var("OLLAMA_HOST").expect("OLLAMA_HOST environment variable missing")
         ),
         str::parse::<u16>(
-            &*std::env::var("OLLAMA_PORT").expect("OLLAMA_PORT environment variable missing"),
+            &std::env::var("OLLAMA_PORT").expect("OLLAMA_PORT environment variable missing"),
         )
         .expect("Could not parse OLLAMA_PORT as integer"),
     )
@@ -22,6 +22,8 @@ pub async fn autocomplete_models<'a>(
     partial: &'a str,
 ) -> impl Iterator<Item = AutocompleteChoice> + 'a {
     let ollama: Ollama = create_ollama();
+
+    // Fetch local models list from Ollama, collect into a Vector of strings
     let model_names: Vec<String> = ollama
         .list_local_models()
         .await
@@ -33,6 +35,8 @@ pub async fn autocomplete_models<'a>(
         .iter()
         .map(|m| m.name.clone())
         .collect::<Vec<String>>();
+
+    // Return the model names as a vector of AutocompleteChoice's
     model_names
         .iter()
         .filter(|model_name| model_name.to_string().contains(partial))
