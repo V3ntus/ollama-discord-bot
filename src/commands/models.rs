@@ -1,8 +1,7 @@
 use crate::{structs, utils};
-use ollama_rs::models::{LocalModel, ModelInfo};
+use ollama_rs::models::ModelInfo;
 use ollama_rs::Ollama;
 use poise::serenity_prelude::{CreateEmbed, CreateEmbedAuthor};
-use serenity::all::AutocompleteChoice;
 
 #[poise::command(
     slash_command,
@@ -20,7 +19,7 @@ async fn models(_ctx: structs::Context<'_>) -> Result<(), structs::Error> {
 async fn info(
     _ctx: structs::Context<'_>,
     #[description = "The model to request"]
-    #[autocomplete = "autocomplete_models"]
+    #[autocomplete = "utils::autocomplete_models"]
     model_name: String,
 ) -> Result<(), structs::Error> {
     let _model_name = &model_name;
@@ -69,31 +68,7 @@ async fn list(_ctx: structs::Context<'_>) -> Result<(), structs::Error> {
     Ok(())
 }
 
-/// Autocomplete callback for list of model names.
-async fn autocomplete_models<'a>(
-    _ctx: structs::Context<'_>,
-    partial: &'a str,
-) -> impl Iterator<Item = AutocompleteChoice> + 'a {
-    let ollama: Ollama = utils::create_ollama();
-    let model_names: Vec<String> = ollama
-        .list_local_models()
-        .await
-        .unwrap_or(vec![LocalModel {
-            name: "Could not fetch models".to_string(),
-            modified_at: "".to_string(),
-            size: 0,
-        }])
-        .iter()
-        .map(|m| m.name.clone())
-        .collect::<Vec<String>>();
-    model_names
-        .iter()
-        .filter(|model_name| model_name.to_string().contains(partial))
-        .map(|model_name| AutocompleteChoice::new(model_name, model_name.to_string()))
-        .collect::<Vec<_>>()
-        .into_iter()
-}
-
 pub fn commands() -> Vec<poise::structs::Command<structs::Data, structs::Error>> {
     vec![models()]
 }
+
