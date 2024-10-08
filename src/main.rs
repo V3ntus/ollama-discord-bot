@@ -22,7 +22,7 @@ async fn main() {
 
     serenity::ClientBuilder::new(
         std::env::var("DISCORD_SECRET").expect("DISCORD_SECRET environment variable not set"),
-        serenity::GatewayIntents::non_privileged(),
+        serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::MESSAGE_CONTENT,
     )
     .framework(
         poise::Framework::builder()
