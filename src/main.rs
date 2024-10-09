@@ -1,6 +1,6 @@
-use tracing::info;
-use poise::serenity_prelude as serenity;
 use dotenv::dotenv;
+use poise::serenity_prelude as serenity;
+use tracing::info;
 
 mod commands;
 mod structs;
@@ -15,10 +15,11 @@ async fn main() {
     tracing_subscriber::fmt::init();
 
     info!("Building bot framework and connecting to Discord...");
-    
+
     // Global commands vector
     let mut commands = vec![];
     commands.extend(commands::models::commands());
+    commands.extend(commands::chat::commands());
 
     serenity::ClientBuilder::new(
         std::env::var("DISCORD_SECRET").expect("DISCORD_SECRET environment variable not set"),
@@ -33,7 +34,8 @@ async fn main() {
             .setup(|ctx, _ready, framework| {
                 Box::pin(async move {
                     // TODO: register globally after development
-                    let _guild_ids: [u64; 2] = [726156212457963601, 948337688824643594];
+                    // let _guild_ids: [u64; 2] = [726156212457963601, 948337688824643594];
+                    let _guild_ids: [u64; 1] = [948337688824643594];
                     for _guild_id in &_guild_ids {
                         poise::builtins::register_in_guild(
                             ctx,
