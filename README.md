@@ -13,9 +13,9 @@ I'm gonna come back to this in a couple years and cringe at how many antipattern
 
 ## TODO
 - [X] Get model list and info (autocomplete)
-- [ ] **LLM chat mode:**
+- [X] **LLM chat mode:**
   - [ ] Session recording with Discord threads.
-  - [ ] Chat streaming by periodically editing reply.
-  - [ ] Ephemeral response when LLM generating.
+  - [X] Chat streaming by periodically editing reply.
+  - [X] Ephemeral response when LLM generating.
 - [ ] **LLM instruct mode:**
   - ???
