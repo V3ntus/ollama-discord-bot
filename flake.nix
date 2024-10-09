@@ -14,15 +14,19 @@
 
         naersk' = pkgs.callPackage naersk {};
 
-      in rec {
+        rust-toolchain = pkgs.symlinkJoin {
+          name = "rust-toolchain";
+          paths = [pkgs.rustc pkgs.cargo pkgs.rustPlatform.rustcSrc];
+        };
+      in {
         # For `nix build` & `nix run`:
         defaultPackage = naersk'.buildPackage {
           src = ./.;
         };
-
         # For `nix develop`:
         devShell = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ rustc cargo clippy openssl_3_3 pkg-config ];
+          RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+          nativeBuildInputs = with pkgs; [ rust-toolchain clippy openssl_3_3 pkg-config rustfmt ];
         };
       }
     );
