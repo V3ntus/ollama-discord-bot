@@ -11,6 +11,12 @@ I'm gonna come back to this in a couple years and cringe at how many antipattern
 - `OLLAMA_HOST`
 - `OLLAMA_PORT`
 
+
+
+https://github.com/user-attachments/assets/450ebca5-ee57-4926-a26a-3716bfc85880
+
+
+
 ## TODO
 - [X] Get model list and info (autocomplete)
 - [X] **LLM chat mode:**
